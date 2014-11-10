@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+<head>
+    <title>Force extension</title>
+    <link rel="stylesheet" href="style/popup.css"/>
+</head>
+<body>
+    <div class="wrap">
+        <ul class="tabs">
+            <li class="tabs-item jira-tab js-jira-tab active">Jira</li>
+            <li class="tabs-item crucible-tab js-crucible-tab">Crucible</li>
+        </ul>
+
+        <div class="js-jira-tab-block">
+            <ul class="toolbar jira-toolbar" style="display: none;">
+                <li class="toolbar-item js-toolbar-item">
+                    <button type="button" class="toolbar-button icon-play" title="Start progress">Start progress</button>
+                </li>
+                <li class="toolbar-item js-toolbar-item">
+                    <button type="button" class="toolbar-button icon-stop" title="Stop progress">Stop progress</button>
+                </li>
+                <li class="toolbar-item js-toolbar-item">
+                    <button type="button" class="toolbar-button icon-complete" title="Complete">Complete</button>
+                </li>
+                <li class="toolbar-item js-toolbar-item">
+                    <button type="button" class="toolbar-button icon-review" title="Create review">Create review</button>
+                </li>
+                <li class="toolbar-item js-toolbar-item">
+                    <button type="button" class="toolbar-button icon-branch js-show-toolbar-popup" title="Create branch">Create branch</button>
+                    <div class="toolbar-popup create-branch-popup js-toolbar-popup" style="display: none;">
+                        <div class="first-step">
+                            <select id="brunchSelect"></select>
+                            <button type="button" class="toolbar-popup-button js-show-second-step">OK</button>
+                        </div>
+                        <div class="second-step" style="display: none;">
+                            <input id="brunchName" type="text"/>
+                            <button type="button" class="toolbar-popup-button js-create-branch">OK</button>
+                        </div>
+                    </div>
+                </li>
+                <li class="toolbar-item js-toolbar-item">
+                    <button type="button" class="toolbar-button icon-log js-show-toolbar-popup" title="Log work">Log work</button>
+                    <div class="toolbar-popup log-work-popup js-toolbar-popup" style="display: none;">
+                        <p>
+                            <input type="text" placeholder="Time spent"/>
+                        </p>
+                        <p>
+                            <textarea name="" id="" cols="30" rows="10" placeholder="Description"></textarea>
+                        </p>
+                        <p>
+                            <button type="button" class="toolbar-popup-button">Log work</button>
+                        </p>
+                    </div>
+                </li>
+            </ul>
+            <div class="tab-block"></div>
+        </div>
+
+        <div class="js-crucible-tab-block" style="display: none;">
+            <ul class="toolbar crucible-toolbar">
+                <li class="toolbar-item">
+                    <button type="button" class="toolbar-button icon-play" title="Start progress">Start progress</button>
+                </li>
+                <li class="toolbar-item">
+                    <button type="button" class="toolbar-button icon-complete" title="Complete">Complete</button>
+                </li>
+                <li class="toolbar-item">
+                    <button type="button" class="toolbar-button icon-find-reviewers" title="Find reviewers">Find reviewers</button>
+                </li>
+            </ul>
+            <div class="tab-block">
+                <h2>My</h2>
+                <div class="js-my-reviews"></div>
+                <h2>To review</h2>
+                <div class="js-reviews-to-do"></div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="js/jquery-2.1.1.js"></script>
+    <script src="js/popup.js"></script>
+    <script src="js/settings.js"></script>
+    <script src="js/mustache.js"></script>
+    <script src="js/init.js"></script>
+    <script src="js/oauth.js"></script>
+
+    <!-- templates -->
+    <script id="tickets-tmpl" type="text/x-template">
+        <ul class="entity-list">
+            {{#issues}}
+            <li class="entity-list-item" title="{{fields.summary}}" data-type="{{fields.issuetype.name}}" data-key="{{key}}" data-summary="{{fields.summary}}">
+                <img src="{{fields.issuetype.iconUrl}}" title="{{fields.issuetype.name}}"/>
+                <a class="entity-list-item-link" href="https://jira.epam.com/jira/browse/{{key}}" target="_blank">{{key}}</a>
+                <span>{{fields.summary}}</span>
+                <img class="status" src="{{fields.status.iconUrl}}" title="{{fields.status.name}}"/>
+            </li>
+            {{/issues}}
+        </ul>
+    </script>
+    <script id="filters-tmpl" type="text/x-template">
+        <ul class="entity-list">
+            {{#filters}}
+            <li class="entity-list-item" title="{{name}}" data-jql="{{jql}}">
+                <span>{{name}}</span>
+            </li>
+            {{/filters}}
+        </ul>
+    </script>
+    <script id="reviews-tmpl" type="text/x-template">
+        <ul class="entity-list">
+            {{#detailedReviewData}}
+            <li class="review entity-list-item" title="{{name}}" data-key="{{permaId.id}}">
+                <span>{{name}}</span>
+            </li>
+            {{/detailedReviewData}}
+        </ul>
+    </script>
+</body>
+</html>
