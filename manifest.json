@@ -1,0 +1,23 @@
+{
+    "manifest_version": 2,
+
+    "name": "Force extension",
+    "description": "Force extension",
+    "version": "1.0",
+    "options_page": "options.html",
+
+    "browser_action": {
+        "default_icon": "style/icon.png",
+        "default_popup": "popup.html"
+    },
+
+    "background": {
+        "page": "background.html"
+    },
+
+    "permissions": [
+        "storage",
+        "http://*/*",
+        "https://*/*"
+    ]
+}
