@@ -156,28 +156,15 @@ var CRUCIBLE = function() {
     }
 }
 var whois = function(jiraTicket, callback) {
-    var url = 'http://eprumosw0428.moscow.epam.com:8085/whois.svc/' + jiraTicket;
+    var url = 'http://evrusarsd0b13:8080/whois.svc/' + jiraTicket;
     ajaxToSystem(url, {}, function(resp){
-        resp.length;
-        var el = $(resp),
-            reviewers = [],
-            reviewersMap = {};
-        //el.html("<html><head><title>titleTest</title></head><body><a href='test0'>test01</a><a href='test1'>test02</a><a href='test2'>test03</a></body></html>");
-        var rows = $('tr', el);
-        $.each(rows, function(index, value) {
-            if (index) {
-                var tds = $('td', value);
-                var revs = $.map(tds.slice(tds.length - 3), function (val, idx) {
-                    return $(val).text().trim();
-                });
-                reviewers.push(revs);
-            }
+        var el = $(resp);
+        var table = $('table#t3', el)
+        var columns = $('tr:gt(1) td:nth-child(n+3)', table);
+        var revs = $.map(columns, function (val) {
+            return $(val).text().trim();
         });
-
-        reviewers.forEach(function (rev) {
-            reviewersMap[rev] = rev;
-        });
-        callback(Object.keys(reviewersMap));
+        callback(Object.keys(revs));
     })
 
 }

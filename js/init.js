@@ -37,7 +37,7 @@ $(function () {
         $tabs.removeClass('active');
         $(this).addClass('active');
         crucible.loginFunction(settings.User(), settings.Password(), function(){
-            crucible.getReviews('open', function (responce) {
+            crucible.getReviews('drafts', function (responce) {
                 var template = $('#reviews-tmpl').html(),
                     $renderedReviews = $(Mustache.render(template, responce));
 
