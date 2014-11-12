@@ -164,7 +164,8 @@ var whois = function(jiraTicket, callback) {
         var revs = $.map(columns, function (val) {
             return $(val).text().trim();
         });
-        callback(Object.keys(revs));
+        // $.unique(revs) - оставиит пустаые значения
+        callback($.unique(revs).filter(function(e){return e}));
     })
 
 }

@@ -216,7 +216,23 @@ $(function () {
         if ($ticket.length) {
             var key = $ticket.data('key');
             whois(key, function (reviewers) {
-                alert(reviewers);
+                $crucibleContainer.fadeOut(200, function () {
+                    var template = $('#reviewers-tmpl').html(),
+                        $renderedReviewers = $(Mustache.render(template, reviewers));
+                    $crucibleContainer.find('.toolbar').show();
+                    $crucibleContainer.find('.tab-block').html($renderedReviewers);
+                    $(".entity-list-item").click(function() {
+                        var $checkBox = $("input", this);
+                        $checkBox.prop("checked", !$checkBox.prop("checked"));
+                    });
+                    $(".entity-list-item > input").click(function(event) {
+                        event.stopPropagation();
+                    });
+/*                    $('.review-button').click(function(){
+                        $('.entity-list-item > input[type=button]');
+                    })*/
+                    $crucibleContainer.fadeIn(200);
+                });
             })
         }
     });

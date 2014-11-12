@@ -116,5 +116,17 @@
             {{/detailedReviewData}}
         </ul>
     </script>
+    <script id="reviewers-tmpl" type="text/x-template">
+        <ul class="entity-list">
+            {{#.}}
+            <li class="entity-list-item">
+                <input type="checkbox"/><span>{{.}}</span>
+            </li>
+            {{/.}}
+        </ul>
+        <div>
+            <input type="button" value="Attach review" class="review-button"/>
+        </div>
+    </script>
 </body>
 </html>
