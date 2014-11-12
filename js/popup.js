@@ -94,7 +94,8 @@ var CRUCIBLE = function() {
         auth= '/auth-v1/login',
         filter= '/filter/',
         details= '/details',
-        items = '/reviewitems',
+        reviewersURL='/reviewers',
+    items = '/reviewitems',
         filterTypes = {toReview : 'toReview', open: 'open'};
 
         this.cruPost = function(url, data, responseFunction) {
@@ -151,6 +152,15 @@ var CRUCIBLE = function() {
     this.getReviewFiles = function(id, callback){
         var postUrl = url +  reviewsUrl + '/' + id + items
         ajaxToSystem(postUrl, {}, function (responce) {
+            callback(responce);
+        });
+    }
+
+    this.addReviewers = function(id, reviewers, callback){
+        var postUrl = url +  reviewsUrl + '/' + id + reviewersURL;
+        var data = reviewers.join(",");
+
+        post(postUrl, data, function (responce) {
             callback(responce);
         });
     }

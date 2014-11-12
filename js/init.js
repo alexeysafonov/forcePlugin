@@ -228,9 +228,37 @@ $(function () {
                     $(".entity-list-item > input").click(function(event) {
                         event.stopPropagation();
                     });
-/*                    $('.review-button').click(function(){
-                        $('.entity-list-item > input[type=button]');
-                    })*/
+                    $('.review-button').click(function(){
+                        var $checked = $('.entity-list-item > input:checked');
+                        if ($checked.length > 0) {
+                            var selected = $.map($checked.parent(), function (val) {
+                                return $('span', val).text().trim();
+                            });
+                            crucible.addReviewers(key, selected, function(){
+                                crucible.getReviews('drafts', function (responce) {
+                                    var template = $('#reviews-tmpl').html(),
+                                        $renderedReviews = $(Mustache.render(template, responce));
+
+                                    $renderedReviews.on('click', 'li', function () {
+                                        $renderedReviews.find('li').removeClass('selected');
+                                        $(this).addClass('selected');
+                                    });
+                                    $crucibleContainer.find('.js-my-reviews').html($renderedReviews);
+                                });
+
+                                crucible.getReviews('toReview', function (responce) {
+                                    var template = $('#reviews-tmpl').html(),
+                                        $renderedReviews = $(Mustache.render(template, responce));
+
+                                    $renderedReviews.on('click', 'li', function () {
+                                        $renderedReviews.find('li').removeClass('selected');
+                                        $(this).addClass('selected');
+                                    });
+                                    $crucibleContainer.find('.js-reviews-to-do').html($renderedReviews);
+                                });
+                            })
+                        }
+                    })
                     $crucibleContainer.fadeIn(200);
                 });
             })
