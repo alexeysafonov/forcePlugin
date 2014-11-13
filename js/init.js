@@ -235,27 +235,36 @@ $(function () {
                                 return $('span', val).text().trim();
                             });
                             crucible.addReviewers(key, selected, function(){
-                                crucible.getReviews('drafts', function (responce) {
-                                    var template = $('#reviews-tmpl').html(),
-                                        $renderedReviews = $(Mustache.render(template, responce));
+                                //todo Возвращение к экрану со списком ревью, необходим жестокий рефакторинг:)
+                                var template = $('#review-tab-main').html(),
+                                    $renderedContent = $(Mustache.render(template));
+                                $crucibleContainer.find('.tab-block').html($renderedContent);
+                                $crucibleContainer.fadeOut(200, function () {
+                                    crucible.getReviews('drafts', function (responce) {
 
-                                    $renderedReviews.on('click', 'li', function () {
-                                        $renderedReviews.find('li').removeClass('selected');
-                                        $(this).addClass('selected');
+                                        var template = $('#reviews-tmpl').html(),
+                                            $renderedReviews = $(Mustache.render(template, responce));
+
+                                        $renderedReviews.on('click', 'li', function () {
+                                            $renderedReviews.find('li').removeClass('selected');
+                                            $(this).addClass('selected');
+                                        });
+                                        $crucibleContainer.find('.js-my-reviews').html($renderedReviews);
                                     });
-                                    $crucibleContainer.find('.js-my-reviews').html($renderedReviews);
-                                });
 
-                                crucible.getReviews('toReview', function (responce) {
-                                    var template = $('#reviews-tmpl').html(),
-                                        $renderedReviews = $(Mustache.render(template, responce));
+                                    crucible.getReviews('toReview', function (responce) {
+                                        var template = $('#reviews-tmpl').html(),
+                                            $renderedReviews = $(Mustache.render(template, responce));
 
-                                    $renderedReviews.on('click', 'li', function () {
-                                        $renderedReviews.find('li').removeClass('selected');
-                                        $(this).addClass('selected');
+                                        $renderedReviews.on('click', 'li', function () {
+                                            $renderedReviews.find('li').removeClass('selected');
+                                            $(this).addClass('selected');
+                                        });
+                                        $crucibleContainer.find('.js-reviews-to-do').html($renderedReviews);
+
                                     });
-                                    $crucibleContainer.find('.js-reviews-to-do').html($renderedReviews);
-                                });
+                                    $crucibleContainer.fadeIn(200);
+                                })
                             })
                         }
                     })
