@@ -62,7 +62,7 @@ var JIRA = function () {
     };
 
     this.getFavoriteFilters = function (callback) {
-        $.getJSON(favoriteFiltersUrl, function(data) {
+        $.getJSON(favoriteFiltersUrl, function (data) {
             data.push({
                 name: 'Assigned to me',
                 jql: 'assignee = currentUser() AND resolution = Unresolved'
@@ -86,19 +86,19 @@ var JIRA = function () {
     }
 }
 
-var CRUCIBLE = function() {
-    var token='',
-        user='',
-        url='https://crucible.epam.com/rest-service',
-        reviewsUrl='/reviews-v1',
-        auth= '/auth-v1/login',
-        filter= '/filter/',
-        details= '/details',
-        reviewersURL='/reviewers',
-    items = '/reviewitems',
-        filterTypes = {toReview : 'toReview', open: 'open'};
+var CRUCIBLE = function () {
+    var token = '',
+        user = '',
+        url = 'https://crucible.epam.com/rest-service',
+        reviewsUrl = '/reviews-v1',
+        auth = '/auth-v1/login',
+        filter = '/filter/',
+        details = '/details',
+        reviewersURL = '/reviewers',
+        items = '/reviewitems',
+        filterTypes = {toReview: 'toReview', open: 'open'};
 
-        this.cruPost = function(url, data, responseFunction) {
+    this.cruPost = function (url, data, responseFunction) {
         $.ajax({
             url: url,
             type: "POST",
@@ -139,7 +139,7 @@ var CRUCIBLE = function() {
                 'name': params.name,
                 'projectKey': params.project,
                 'jiraIssueKey': params.ticket
-                }};
+            }};
         var urlPost = url + reviewsUrl;
         this.cruPost(urlPost, jsonRequest, function (responce) {
             window.open('https://crucible.epam.com/cru/' + responce.permaId.id, '');
@@ -149,25 +149,34 @@ var CRUCIBLE = function() {
      * perform <fileType>File</fileType>
      * @param id - review id
      */
-    this.getReviewFiles = function(id, callback){
-        var postUrl = url +  reviewsUrl + '/' + id + items
+    this.getReviewFiles = function (id, callback) {
+        var postUrl = url + reviewsUrl + '/' + id + items
         ajaxToSystem(postUrl, {}, function (responce) {
             callback(responce);
         });
     }
 
-    this.addReviewers = function(id, reviewers, callback){
-        var postUrl = url +  reviewsUrl + '/' + id + reviewersURL;
+    this.addReviewers = function (id, reviewers, callback) {
+        var postUrl = url + reviewsUrl + '/' + id + reviewersURL;
         var data = reviewers.join(",");
 
-        post(postUrl, data, function (responce) {
-            callback(responce);
+        //TODO Вынести
+        //Статус 204(не 200!!) сигнализирует об успещности. Тела респонса нет
+        $.ajax({
+            url: postUrl,
+            type: 'POST',
+            contentType: 'application/json',
+            dataType: 'json',
+            // Самое главное этот флаг, он предотвращает обработку данных и отправляет "сырую строку"
+            processData: false,
+            data: data,
+            success: callback
         });
     }
 }
-var whois = function(jiraTicket, callback) {
+var whois = function (jiraTicket, callback) {
     var url = 'http://evrusarsd0b13:8080/whois.svc/' + jiraTicket;
-    ajaxToSystem(url, {}, function(resp){
+    ajaxToSystem(url, {}, function (resp) {
         var el = $(resp);
         var table = $('table#t3', el)
         var columns = $('tr:gt(1) td:nth-child(n+3)', table);
@@ -175,7 +184,9 @@ var whois = function(jiraTicket, callback) {
             return $(val).text().trim();
         });
         // $.unique(revs) - оставиит пустаые значения
-        callback($.unique(revs).filter(function(e){return e}));
+        callback($.unique(revs).filter(function (e) {
+            return e
+        }));
     })
 
 }
@@ -184,7 +195,7 @@ var GIT = function () {
     var apiUrl = "https://git.epam.com/api/v3",
         token = null,
         getToken = '/session',
-        projects ='/projects/',
+        projects = '/projects/',
         branches = '/repository/branches';
 
 
