@@ -11,10 +11,10 @@ $(function () {
 
     $('.js-jira-tab').click(function () {
         var $self = $(this),
-        credentials = {
-            username: settings.User(),
-            password: settings.Password()
-        };
+            credentials = {
+                username: settings.User(),
+                password: settings.Password()
+            };
 
         jira.auth(credentials, function () {
             jira.getFavoriteFilters(function (filters) {
@@ -36,7 +36,7 @@ $(function () {
         openTab($crucibleContainer);
         $tabs.removeClass('active');
         $(this).addClass('active');
-        crucible.loginFunction(settings.User(), settings.Password(), function(){
+        crucible.loginFunction(settings.User(), settings.Password(), function () {
             crucible.getReviews('drafts', function (responce) {
                 var template = $('#reviews-tmpl').html(),
                     $renderedReviews = $(Mustache.render(template, responce));
@@ -61,7 +61,7 @@ $(function () {
         });
     });
 
-    $('.js-show-toolbar-popup').click(function(){
+    $('.js-show-toolbar-popup').click(function () {
         if ($(this).closest('.js-toolbar-item').hasClass('selected')) {
             $(this).closest('.js-toolbar-item').removeClass('selected');
             $(this).siblings('.js-toolbar-popup').hide();
@@ -69,16 +69,16 @@ $(function () {
             $('.js-toolbar-item').removeClass('selected');
             $('.js-toolbar-popup').hide();
             $(this).closest('.js-toolbar-item').addClass('selected');
-            $(this).siblings('.js-toolbar-popup').show(); 
+            $(this).siblings('.js-toolbar-popup').show();
 
             if ($(this).siblings('.js-toolbar-popup').hasClass('create-branch-popup')) {
                 var projectId = settings.ProjectId();
 
                 git.listBrunches(projectId, afterlistBrunches);
 
-                function afterlistBrunches(list){
+                function afterlistBrunches(list) {
                     $(list).each(function (index, value) {
-                        var op = "<option value="+value.commit.id+">"+value.name + "</option>";
+                        var op = "<option value=" + value.commit.id + ">" + value.name + "</option>";
                         $("#brunchSelect").append(op);
                     });
                 }
@@ -95,7 +95,7 @@ $(function () {
         }
     });
 
-    $('.js-show-second-step').click(function() {
+    $('.js-show-second-step').click(function () {
         var $ticket = $jiraContainer.find('.entity-list-item.selected'),
             key = $ticket.data('key'),
             type = $ticket.data('type'),
@@ -115,24 +115,18 @@ $(function () {
 
         brunchName += "/" + key;
 
-         $("#brunchName").val(brunchName);
+        $("#brunchName").val(brunchName);
 
         $('.first-step').hide();
         $('.second-step').show();
 
     });
 
-    $('.js-create-branch').click(function(){
+    $('.js-create-branch').click(function () {
         var projectId = settings.ProjectId(),
             commitId = $("#brunchSelect").val(),
             brunchName = $("#brunchName").val();
-
-
-
-
-
         git.createBrunch(projectId, commitId, brunchName);
-
         $('.js-toolbar-popup').hide();
         $('.js-toolbar-item').removeClass('selected');
     });
@@ -164,12 +158,25 @@ $(function () {
             $renderedTickets = $(Mustache.render(template, issues));
 
         $renderedTickets.on('click', 'li', function () {
+            var $toolbar = $('.jira-toolbar button[action]');
+            $toolbar.attr('disabled', 'disabled');
             $jiraContainer.find('.selected').removeClass('selected');
             $(this).addClass('selected');
+            jira.getTransitions($(this).data('key'), function (responce) {
+                $.each(responce.transitions, function (index, value) {
+                    $.each($toolbar, function (idx, li) {
+                        if (value.name === li.title) {
+                            $(li).removeAttr('disabled');
+                            $(li).attr('action', value.id);
+                        }
+                    })
+                })
+            })
         });
 
         $jiraContainer.fadeOut(200, function () {
             $jiraContainer.find('.toolbar').show();
+            $('.jira-toolbar button[action]').attr('disabled', 'disabled');
             $jiraContainer.find('.tab-block').html($renderedTickets);
             $jiraContainer.fadeIn(200);
         });
@@ -189,19 +196,20 @@ $(function () {
     $('.icon-play').click(function () {
         var $ticket = $jiraContainer.find('.selected');
         if ($ticket.length) {
-            setTimeout(function () {
+            jira.setTransition($ticket.data('key'), $(this).attr('action'), function () {
                 $ticket.find('.status').attr('src', 'https://jira.epam.com/jira/images/icons/statuses/inprogress.png');
-            }, 500);
+            })
         }
     });
     $('.icon-stop').click(function () {
         var $ticket = $jiraContainer.find('.selected');
         if ($ticket.length) {
-            setTimeout(function () {
+            jira.setTransition($ticket.data('key'), $(this).attr('action'), function () {
                 $ticket.find('.status').attr('src', 'https://jira.epam.com/jira/images/icons/statuses/open.png');
-            }, 500);
+            })
         }
     });
+
     $('.icon-complete').click(function () {
         var $ticket = $jiraContainer.find('.selected');
         if ($ticket.length) {
@@ -221,20 +229,20 @@ $(function () {
                         $renderedReviewers = $(Mustache.render(template, reviewers));
                     $crucibleContainer.find('.toolbar').show();
                     $crucibleContainer.find('.tab-block').html($renderedReviewers);
-                    $(".entity-list-item").click(function() {
+                    $(".entity-list-item").click(function () {
                         var $checkBox = $("input", this);
                         $checkBox.prop("checked", !$checkBox.prop("checked"));
                     });
-                    $(".entity-list-item > input").click(function(event) {
+                    $(".entity-list-item > input").click(function (event) {
                         event.stopPropagation();
                     });
-                    $('.review-button').click(function(){
+                    $('.review-button').click(function () {
                         var $checked = $('.entity-list-item > input:checked');
                         if ($checked.length > 0) {
                             var selected = $.map($checked.parent(), function (val) {
                                 return $('span', val).text().trim();
                             });
-                            crucible.addReviewers(key, selected, function(){
+                            crucible.addReviewers(key, selected, function () {
                                 //todo Возвращение к экрану со списком ревью, необходим жестокий рефакторинг:)
                                 var template = $('#review-tab-main').html(),
                                     $renderedContent = $(Mustache.render(template));

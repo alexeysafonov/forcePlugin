@@ -52,10 +52,11 @@ function ajaxToSystem(url, data, responseFunction) {
 }
 
 var JIRA = function () {
-
     var authUrl = 'https://jira.epam.com/jira/rest/auth/1/session',
         searchUrl = 'https://jira.epam.com/jira/rest/api/2/search',
-        favoriteFiltersUrl = 'https://jira.epam.com/jira/rest/api/2/filter/favourite?expand=false'
+        favoriteFiltersUrl = 'https://jira.epam.com/jira/rest/api/2/filter/favourite?expand=false',
+        getPossibleActionsUrl = 'https://jira.epam.com/jira/rest/api/2/issue/{0}/transitions?translitionid',
+        setTranslation = 'https://jira.epam.com/jira//rest/api/2/issue/{0}/transitions?expand=transitions.fields';
 
     this.auth = function (credentials, callback) {
         post(authUrl, credentials, callback);
@@ -83,6 +84,17 @@ var JIRA = function () {
                 "issuetype"
             ]
         }, callback);
+    }
+
+    this.getTransitions = function (ticketId, callback) {
+        $.getJSON(getPossibleActionsUrl.format(ticketId), '', callback)
+    }
+
+    this.setTransition = function (ticketId, translationId, callback) {
+        var data = {
+            "transition": {"id": translationId}
+        }
+        post(getPossibleActionsUrl.format(ticketId), data, callback)
     }
 }
 
@@ -241,4 +253,13 @@ var GIT = function () {
             })
     };
 
+}
+
+String.prototype.format = function () {
+    var s = this;
+    for (var i = 0; i < arguments.length; i++) {
+        var reg = new RegExp("\\{" + i + "\\}", "gm");
+        s = s.replace(reg, arguments[i]);
+    }
+    return s;
 }
