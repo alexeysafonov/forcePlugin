@@ -20,6 +20,10 @@ body {
     margin-bottom: 20px;
 }
 
+.tabs li {
+    display: inline-block;
+}
+
 .tabs-item {
     height: 32px;
     width: 100px;

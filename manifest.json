@@ -11,10 +11,6 @@
         "default_popup": "popup.html"
     },
 
-    "background": {
-        "page": "background.html"
-    },
-
     "permissions": [
         "storage",
         "http://*/*",
