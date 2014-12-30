@@ -7,6 +7,10 @@ forcePluginApp.controller('FiltersController', ['$scope', 'jira',
         };
 
         jira.getFavoriteFilters().success(function (data) {
+            data.push({
+                name: 'Assigned to me',
+                jql: 'assignee = currentUser() AND resolution = Unresolved'
+            });
             $scope.filters = data;
         });
     }]);

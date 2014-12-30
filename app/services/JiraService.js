@@ -1,6 +1,6 @@
 forcePluginApp.service('jira', ['$http',
     function ($http) {
-        var currentFilterJQL = 'assignee = currentUser() AND resolution = Unresolved';
+        var currentFilterJQL;
 
         this.setCurrentFilterJQL = function (jql) {
             currentFilterJQL = jql;
@@ -20,10 +20,10 @@ forcePluginApp.service('jira', ['$http',
                 "startAt": 0,
                 "maxResults": 15,
                 "fields": [
-                    "summary",
-                    "status",
-                    "assignee",
-                    "issuetype"
+                    'summary',
+                    'status',
+                    'assignee',
+                    'issuetype'
                 ]
             });
         }

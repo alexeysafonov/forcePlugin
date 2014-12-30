@@ -1,8 +1,10 @@
-
 forcePluginApp.controller('IssuesController', ['$scope', 'jira',
     function ($scope, jira) {
-        jira.getIssuesByCurrentFilter().
-            success(function (data) {
-                $scope.tickets = data.issues;
-            });
+        $scope.loading = true;
+
+        jira.getIssuesByCurrentFilter().success(function (data) {
+            $scope.tickets = data.issues;
+        }).finally(function () {
+            $scope.loading = false;
+        });
     }]);

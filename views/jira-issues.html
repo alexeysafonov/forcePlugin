@@ -1,4 +1,4 @@
-<ul class="toolbar jira-toolbar">
+<ul class="toolbar jira-toolbar" ng-if="false">
     <li class="toolbar-item">
         <button class="toolbar-button icon-play" title="Start Progress">Start progress</button>
     </li>
@@ -18,11 +18,23 @@
         <button class="toolbar-button icon-log" title="Log work">Log work</button>
     </li>
 </ul>
-<ul class="entity-list">
-    <li ng-repeat="ticket in tickets" class="entity-list-item">
-        <img src="{{ticket.fields.issuetype.iconUrl}}"/>
-        <a class="entity-list-item-link" href="https://jira.epam.com/jira/browse/{{ticket.key}}" target="_blank">{{ticket.key}}</a>
-        <span>{{ticket.fields.summary}}</span>
-        <img class="status" src="{{ticket.fields.status.iconUrl}}" title="{{ticket.fields.status.name}}"/>
-    </li>
-</ul>
+<md-content class="md-padding">
+    <div layout layout-align="center center">
+        <md-progress-circular md-mode="indeterminate" ng-if="loading"></md-progress-circular>
+        <strong ng-if="tickets.length == 0">No issues found for this filter.</strong>
+    </div>
+
+    <md-list>
+        <md-item ng-repeat="ticket in tickets" class="animate-repeat">
+            <md-item-content>
+                <img ng-src="{{ticket.fields.issuetype.iconUrl}}"/>
+                <div class="md-tile-content">
+                    <a href="https://jira.epam.com/jira/browse/{{ticket.key}}" target="_blank">{{ticket.key}}</a>
+                    <h3>{{ticket.fields.summary}}</h3>
+                </div>
+                <img ng-src="{{ticket.fields.status.iconUrl}}" title="{{ticket.fields.status.name}}"/>
+            </md-item-content>
+            <md-divider ng-if="!$last"></md-divider>
+        </md-item>
+    </md-list>
+</md-content>

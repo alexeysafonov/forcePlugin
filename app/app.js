@@ -1,4 +1,4 @@
-var forcePluginApp = angular.module('forcePluginApp', ['ngRoute']);
+var forcePluginApp = angular.module('forcePluginApp', ['ngRoute', 'ngMaterial']);
 
 forcePluginApp.config(['$routeProvider',
     function ($routeProvider) {
