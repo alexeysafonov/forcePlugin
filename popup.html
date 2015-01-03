@@ -7,12 +7,13 @@
 </head>
 <body>
 <div class="wrap">
-    <md-tabs>
-        <md-tab label="Jira"></md-tab>
-        <md-tab label="Crucible"></md-tab>
-    </md-tabs>
-    <!--<a href="#/jira/filters" class="tabs-item jira-tab active"></a>
-    <a href="#/crucible/reviews" class="tabs-item crucible-tab"></a>-->
+    <md-content>
+        <section layout="row" layout-align="space-between center">
+            <md-button ng-click="back()">Back</md-button>
+            <md-button ng-click="goTo('/jira/filters')" flex class="md-raised md-primary">Jira</md-button>
+            <md-button ng-click="goTo('/crucible/reviews')" flex class="md-raised md-primary">Crucible</md-button>
+        </section>
+    </md-content>
     <div ng-view></div>
 </div>
 

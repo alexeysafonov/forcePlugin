@@ -1,6 +1,7 @@
 
 forcePluginApp.controller('FiltersController', ['$scope', 'jira',
     function ($scope, jira) {
+        $scope.loading = true;
 
         $scope.setCurrentFilter = function (jql) {
             jira.setCurrentFilterJQL(jql);
@@ -12,5 +13,7 @@ forcePluginApp.controller('FiltersController', ['$scope', 'jira',
                 jql: 'assignee = currentUser() AND resolution = Unresolved'
             });
             $scope.filters = data;
+        }).finally(function () {
+            $scope.loading = false;
         });
     }]);

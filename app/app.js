@@ -19,3 +19,15 @@ forcePluginApp.config(['$routeProvider',
                 redirectTo: '/jira/filters'
             });
     }]);
+
+//TODO find better way for toolbar links and 'back' button
+forcePluginApp.run(
+    function($rootScope, $location) {
+    $rootScope.goTo = function(path) {
+        $location.path(path);
+    };
+
+    $rootScope.back = function() {
+        window.history.back();
+    };
+});
