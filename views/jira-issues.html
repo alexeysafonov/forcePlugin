@@ -1,23 +1,7 @@
-<ul class="toolbar jira-toolbar" ng-if="false">
-    <li class="toolbar-item">
-        <button class="toolbar-button icon-play" title="Start Progress">Start progress</button>
-    </li>
-    <li class="toolbar-item">
-        <button class="toolbar-button icon-stop" title="Stop Progress">Stop progress</button>
-    </li>
-    <li class="toolbar-item">
-        <button class="toolbar-button icon-complete" title="Complete">Complete</button>
-    </li>
-    <li class="toolbar-item">
-        <button class="toolbar-button icon-review" title="Create review">Create review</button>
-    </li>
-    <li class="toolbar-item">
-        <button class="toolbar-button icon-branch" title="Create branch">Create branch</button>
-    </li>
-    <li class="toolbar-item">
-        <button class="toolbar-button icon-log" title="Log work">Log work</button>
-    </li>
-</ul>
+<button ng-repeat="action in tickets[selectedIndex].actions"
+        ng-click="performAction(tickets[selectedIndex].key, action)">{{action.name}}
+</button>
+
 <md-content class="md-padding">
     <div layout layout-align="center center">
         <md-progress-circular md-mode="indeterminate" ng-if="loading"></md-progress-circular>
@@ -25,11 +9,13 @@
     </div>
 
     <md-list>
-        <md-item ng-repeat="ticket in tickets" class="animate-repeat">
-            <md-item-content>
+        <md-item ng-repeat="ticket in tickets">
+            <md-item-content ng-click="select($index)" ng-class="{selected: $index == selectedIndex}">
                 <img ng-src="{{ticket.fields.issuetype.iconUrl}}"/>
+
                 <div class="md-tile-content">
                     <a href="https://jira.epam.com/jira/browse/{{ticket.key}}" target="_blank">{{ticket.key}}</a>
+
                     <h3>{{ticket.fields.summary}}</h3>
                 </div>
                 <img ng-src="{{ticket.fields.status.iconUrl}}" title="{{ticket.fields.status.name}}"/>

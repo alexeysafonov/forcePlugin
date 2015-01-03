@@ -11,6 +11,10 @@ body {
     font-family: Tahoma, Arial, sans-serif;
 }
 
+.selected {
+    background: #8b95a2;
+}
+
 .wrap {
     margin: 20px;
 }

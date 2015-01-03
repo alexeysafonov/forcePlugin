@@ -1,6 +1,8 @@
 forcePluginApp.service('jira', ['$http',
     function ($http) {
-        var currentFilterJQL;
+        var currentFilterJQL,
+        //TODO move to settings
+            host = 'https://jira.epam.com/jira';
 
         this.setCurrentFilterJQL = function (jql) {
             currentFilterJQL = jql;
@@ -10,12 +12,29 @@ forcePluginApp.service('jira', ['$http',
             return currentFilterJQL;
         };
 
+        this.login = function (login, password) {
+            return $http.post(host + '/rest/auth/1/session', {
+                username: login,
+                password: password
+            });
+        };
+
         this.getFavoriteFilters = function () {
-            return $http.get('https://jira.epam.com/jira/rest/api/2/filter/favourite?expand=false');
+            return $http.get(host + '/rest/api/2/filter/favourite?expand=false');
+        };
+
+        this.getPossibleActions = function (issueId) {
+            return $http.get(host + '/rest/api/2/issue/{issueId}/transitions'.replace('{issueId}', issueId));
+        };
+
+        this.performAction = function (issueId, actionId) {
+            return $http.post(host + '/rest/api/2/issue/{issueId}/transitions'.replace('{issueId}', issueId), {
+                'transition': actionId
+            });
         };
 
         this.getIssuesByCurrentFilter = function () {
-            return $http.post('https://jira.epam.com/jira/rest/api/2/search', {
+            return $http.post(host + '/rest/api/2/search', {
                 "jql": currentFilterJQL,
                 "startAt": 0,
                 "maxResults": 15,
@@ -27,4 +46,5 @@ forcePluginApp.service('jira', ['$http',
                 ]
             });
         }
-    }]);
+    }
+]);
