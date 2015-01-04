@@ -1,28 +1,48 @@
 <!DOCTYPE html>
-<html>
-<head><title>Mega Plugin Settings</title></head>
+<html ng-app="SettingsApp" ng-csp="">
+<head>
+    <title>Mega Plugin Settings</title>
+    <link rel="stylesheet" href="style/angular-material.min-0.6.1.css">
+</head>
 <body>
+<div ng-controller="SettingsController">
+    <md-content>
+        <md-toolbar>
+            <h2 class="md-toolbar-tools">
+                <span>Settings</span>
+            </h2>
+            <md-progress-linear md-mode="indeterminate" ng-if="loading"></md-progress-linear>
+        </md-toolbar>
 
-<label for="userName">
-    User name
-</label>
-<input type="text" id="userName"/>
+        <form style="padding: 20px;" layout="column" layout-align="start start">
+            <div layout="row">
+                <md-text-float label="Username" ng-model="settings.username" ng-disabled="loading"></md-text-float>
+                <md-text-float label="Password" ng-model="settings.password" type="password"
+                               ng-disabled="loading"></md-text-float>
+            </div>
+            <br/>
 
-<label for="userPassword">
-    Password
-</label>
-<input type="password" id="userPassword"/>
+            <md-text-float label="Jira Url" ng-model="settings.jiraUrl" ng-disabled="loading"></md-text-float>
+            <md-text-float label="Crucible Url" ng-model="settings.crucibleUrl"
+                           ng-disabled="loading"></md-text-float>
+            <br/>
 
-<label for="projectName">
-    Project name
-</label>
-<input type="text" id="projectName"/>
+            <md-text-float label="Project name" ng-model="settings.projectName" ng-disabled="loading"></md-text-float>
 
+            <md-button class="md-raised md-primary" ng-click="saveSettings()">Save</md-button>
+        </form>
+    </md-content>
+</div>
 
-<div id="status"></div>
-<button id="saveSettings">Save</button>
+<!-- Angular and dependencies -->
+<script src="app/js/hammer.min-2.0.4.js"></script>
+<script src="app/js/angular.min-1.3.8.js"></script>
+<script src="app/js/angular-route.min-1.3.8.js"></script>
+<script src="app/js/angular-animate.min-1.3.8.js"></script>
+<script src="app/js/angular-aria.min-1.3.8.js"></script>
+<script src="app/js/angular-material.min-0.6.1.js"></script>
 
-<script src="app/js/settings.js"></script>
-
+<script src="app/settings.js"></script>
+<script src="app/services/settingsService.js"></script>
 </body>
 </html>
