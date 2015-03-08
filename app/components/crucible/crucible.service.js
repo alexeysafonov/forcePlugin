@@ -1,5 +1,13 @@
-forcePluginApp.service('crucible', ['$http',
-    function ($http) {
+(function () {
+    "use strict";
+
+    angular
+        .module('forcePluginApp')
+        .service('crucible', crucibleService);
+
+    crucibleService.$inject = ['$http'];
+
+    function crucibleService($http) {
         var token = '',
             user = '',
             url = 'https://crucible.epam.com/rest-service',
@@ -88,4 +96,4 @@ forcePluginApp.service('crucible', ['$http',
             });
         }
     }
-]);
+})();

@@ -1,6 +1,13 @@
+(function () {
+    "use strict";
 
-forcePluginApp.controller('ReviewsController', ['$scope',
-    function ($scope) {
+    angular
+        .module('forcePluginApp')
+        .controller('ReviewsController', ReviewsController);
+
+    ReviewsController.$inject = ['$scope'];
+
+    function ReviewsController($scope) {
         $scope.reviews = [{
             name: "[VTBRTBR-8246] Review 1"
         }, {
@@ -10,4 +17,5 @@ forcePluginApp.controller('ReviewsController', ['$scope',
         }, {
             name: "[VTBRTBR-8317] Review 4"
         }]
-    }]);
+    }
+})();

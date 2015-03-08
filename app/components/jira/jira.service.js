@@ -1,5 +1,13 @@
-forcePluginApp.service('jira', ['$http',
-    function ($http) {
+(function () {
+    "use strict";
+
+    angular
+        .module('forcePluginApp')
+        .service('jira', jiraService);
+
+    jiraService.$inject = ['$http'];
+
+    function jiraService($http) {
         var currentFilterJQL,
         //TODO move to settings
             host = 'https://jira.epam.com/jira';
@@ -17,6 +25,10 @@ forcePluginApp.service('jira', ['$http',
                 username: login,
                 password: password
             });
+        };
+
+        this.checkAuth = function () {
+            return $http.get(host + '/rest/auth/1/session');
         };
 
         this.getFavoriteFilters = function () {
@@ -47,4 +59,4 @@ forcePluginApp.service('jira', ['$http',
             });
         }
     }
-]);
+})();

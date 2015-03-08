@@ -48,11 +48,11 @@ body {
 }
 
 .jira-tab {
-    background: url(../images/jira.png) no-repeat 15px 50%;
+    background: url(../assets/images/jira.png) no-repeat 15px 50%;
 }
 
 .crucible-tab {
-    background: url(../images/crucible.png) no-repeat 15px 50%;
+    background: url(../assets/images/crucible.png) no-repeat 15px 50%;
 }
 
 .tab-block {
@@ -132,39 +132,39 @@ body {
 }
 
 .icon-play {
-    background: url(../images/icons/icon-play.png) no-repeat 50% 50%;
+    background: url(../assets/images/icons/icon-play.png) no-repeat 50% 50%;
 }
 
 .icon-stop {
-    background: url(../images/icons/icon-stop.png) no-repeat 50% 50%;
+    background: url(../assets/images/icons/icon-stop.png) no-repeat 50% 50%;
 }
 
 .icon-complete {
-    background: url(../images/icons/icon-complete.png) no-repeat 50% 50%;
+    background: url(../assets/images/icons/icon-complete.png) no-repeat 50% 50%;
 }
 
 .icon-review {
-    background: url(../images/icons/icon-review.png) no-repeat 50% 50%;
+    background: url(../assets/images/icons/icon-review.png) no-repeat 50% 50%;
 }
 
 .icon-branch {
-    background: url(../images/icons/icon-branch.png) no-repeat 50% 50%;
+    background: url(../assets/images/icons/icon-branch.png) no-repeat 50% 50%;
 }
 
 .icon-log {
-    background: url(../images/icons/icon-log.png) no-repeat 50% 50%;
+    background: url(../assets/images/icons/icon-log.png) no-repeat 50% 50%;
 }
 
 .icon-find-reviewers {
-    background: url(../images/icons/icon-find-reviewers.png) no-repeat 50% 50%;
+    background: url(../assets/images/icons/icon-find-reviewers.png) no-repeat 50% 50%;
 }
 
 .toolbar-item.selected .icon-branch {
-    background: url(../images/icons/icon-branch-selected.png) no-repeat 50% 50%;
+    background: url(../assets/images/icons/icon-branch-selected.png) no-repeat 50% 50%;
 }
 
 .toolbar-item.selected .icon-log {
-    background: url(../images/icons/icon-log-selected.png) no-repeat 50% 50%;
+    background: url(../assets/images/icons/icon-log-selected.png) no-repeat 50% 50%;
 }
 
 .toolbar-popup {

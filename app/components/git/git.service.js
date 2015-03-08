@@ -1,5 +1,13 @@
-forcePluginApp.service('git', ['$http',
-    function ($http) {
+(function () {
+    "use strict";
+
+    angular
+        .module('forcePluginApp')
+        .service('git', gitService);
+
+    gitService.$inject = ['$http'];
+
+    function gitService($http) {
         var url = "https://git.epam.com/api/v3",
             token = null,
             getToken = '/session',
@@ -52,4 +60,5 @@ forcePluginApp.service('git', ['$http',
 
                 })
         }
-    }]);
+    }
+})();

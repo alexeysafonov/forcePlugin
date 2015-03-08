@@ -1,6 +1,13 @@
+(function () {
+    "use strict";
 
-forcePluginApp.controller('FiltersController', ['$scope', 'jira',
-    function ($scope, jira) {
+    angular
+        .module('forcePluginApp')
+        .controller('FiltersController', FiltersController);
+
+    FiltersController.$inject = ['$scope', 'jira'];
+
+    function FiltersController($scope, jira) {
         $scope.loading = true;
 
         $scope.setCurrentFilter = function (jql) {
@@ -16,4 +23,5 @@ forcePluginApp.controller('FiltersController', ['$scope', 'jira',
         }).finally(function () {
             $scope.loading = false;
         });
-    }]);
+    }
+})();

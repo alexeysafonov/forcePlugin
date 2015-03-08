@@ -1,5 +1,13 @@
-forcePluginApp.controller('IssuesController', ['$scope', '$mdToast', 'jira',
-    function ($scope, $mdToast, jira) {
+(function () {
+    "use strict";
+
+    angular
+        .module('forcePluginApp')
+        .controller('IssuesController', IssuesController);
+
+    IssuesController.$inject = ['$scope', '$mdToast', 'jira'];
+
+    function IssuesController($scope, $mdToast, jira) {
         $scope.selectedIndex = null;
         $scope.loading = true;
 
@@ -36,4 +44,5 @@ forcePluginApp.controller('IssuesController', ['$scope', '$mdToast', 'jira',
                 );
             });
         };
-    }]);
+    }
+})();

@@ -1,5 +1,13 @@
-angular.module('fpSettingsMod', []).service('settingsStorage', ['$http', '$q',
-    function ($http, $q) {
+(function () {
+    'use strict';
+
+    angular
+        .module('fpSettingsMod', [])
+        .service('settingsStorage', settingsStorage);
+
+    settingsStorage.$inject = ['$q'];
+
+    function settingsStorage($q) {
         var storage = chrome.storage.sync;
 
         this.saveSettings = function (settings) {
@@ -25,4 +33,5 @@ angular.module('fpSettingsMod', []).service('settingsStorage', ['$http', '$q',
             });
             return deferred.promise;
         };
-    }]);
+    }
+})();
