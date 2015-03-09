@@ -1,4 +1,4 @@
-<md-content class="md-padding">
+<md-content class="content scrollbox">
     <div layout layout-align="center center">
         <md-progress-circular md-mode="indeterminate" ng-if="loading"></md-progress-circular>
         <strong ng-if="reviewsToReview.length == 0 && openReviews.length == 0">There are no reviews.</strong>
@@ -9,12 +9,12 @@
     </div>
     <md-list ng-if="outForReview.length">
         <md-item ng-repeat="review in outForReview">
-            <md-item-content>
+            <md-item-content class="content-item">
                 <div class="md-tile-content">
                     <a href="https://crucible.epam.com/cru/{{review.permaId.id}}"
                        target="_blank">{{review.permaId.id}}</a>
 
-                    <h3 ng-click="findReviewers(review.permaId.id)">{{review.name}}</h3>
+                    <h4 ng-click="findReviewers(review.permaId.id)">{{review.name}}</h4>
                 </div>
             </md-item-content>
             <md-divider ng-if="!$last"></md-divider>
@@ -26,12 +26,12 @@
     </div>
     <md-list ng-if="reviewsToReview.length">
         <md-item ng-repeat="review in reviewsToReview">
-            <md-item-content>
+            <md-item-content class="content-item">
                 <div class="md-tile-content">
                     <a href="https://crucible.epam.com/cru/{{review.permaId.id}}"
                        target="_blank">{{review.permaId.id}}</a>
 
-                    <h3 ng-click="findReviewers(review.permaId.id)">{{review.name}}</h3>
+                    <h4 ng-click="findReviewers(review.permaId.id)">{{review.name}}</h4>
                 </div>
             </md-item-content>
             <md-divider ng-if="!$last"></md-divider>
