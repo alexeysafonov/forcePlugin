@@ -3,67 +3,74 @@
 
     angular
         .module('forcePluginApp')
-        .service('crucible', crucibleService);
+        .service('crucible', crucibleService)
+        .constant('REVIEW_TYPE', {
+            TO_REVIEW: 'toReview',
+            OPEN: 'open'
+        })
 
-    crucibleService.$inject = ['$http'];
+    crucibleService.$inject = ['$http', '$q', '$log'];
 
-    function crucibleService($http) {
-        var token = '',
-            user = '',
-            url = 'https://crucible.epam.com/rest-service',
-            reviewsUrl = '/reviews-v1',
-            auth = '/auth-v1/login',
-            filter = '/filter/',
-            details = '/details',
-            reviewersURL = '/reviewers',
-            items = '/reviewitems',
-            filterTypes = {toReview: 'toReview', open: 'open'};
+    function crucibleService($http, $q, $log) {
+        var host = 'https://crucible.epam.com/rest-service',
+            reviewsUrl = '/reviews-v1';
 
-        this.loginFunction = function (login, password, responseFunction) {
-            var urlPost = url + auth;
-            var data = 'userName=' + login + '&password=' + password;
-            user = login;
-            postForm(urlPost, data, function () {
-                token = this.token;
-                responseFunction();
+        this.login = function (login, password) {
+            return $http.post(host + '/auth-v1/login', {
+                userName: login,
+                password: password
+            }).then(function (responce) {
+                return responce.data;
+            }).catch(function (responce) {
+                $log.warn('Crucible authentication failed: %s - %s', responce.statusText, responce.status);
+                return $q.reject(responce.text);
             });
         };
 
-        this.getReviews = function (type, callback) {
-            var postUrl = url + reviewsUrl + filter + type + details;
-            ajaxToSystem(postUrl, {}, function (responce) {
-                callback(responce);
-            });
+        this.getReviews = function (type) {
+            return $http.get(host + reviewsUrl + '/filter/' + type + '/details')
+                .then(function (responce) {
+                    return responce.data.detailedReviewData;
+                })
+                .catch(function (responce) {
+                    $log.warn('Crucible failed on loading reviews: %s - %s', responce.statusText, responce.status);
+                    return $q.reject(responce.statusText);
+                });
         };
 
-        this.createReview = function (params) {
-            var jsonRequest = {
+        this.createReview = function (author, name, projectKey, jiraIssueKey, description, creator, moderator) {
+            return $http.post(host + reviewsUrl, {
                 'detailedReviewData': {
                     'allowReviewersToJoin': true,
-                    'author': {'userName': user},
-                    'creator': {'userName': user},
-                    'moderator': {'userName': user},
-                    'description': params.description || '',
-                    'name': params.name,
-                    'projectKey': params.project,
-                    'jiraIssueKey': params.ticket
+                    'author': {'userName': author},
+                    'creator': {'userName': creator || author},
+                    'moderator': {'userName': moderator || author},
+                    'description': description || '',
+                    'name': name,
+                    'projectKey': projectKey,
+                    'jiraIssueKey': jiraIssueKey
                 }
-            };
-            var urlPost = url + reviewsUrl;
-            this.cruPost(urlPost, jsonRequest, function (responce) {
-                window.open('https://crucible.epam.com/cru/' + responce.permaId.id, '');
-            })
+            }).then(function (responce) {
+                return responce.data;
+            }).catch(function (responce) {
+                $log.warn('Crucible failed on creating review: %s - %s', responce.statusText, responce.status);
+                return $q.reject(responce.statusText);
+            });
         };
 
-        this.getReviewFiles = function (id, callback) {
-            var postUrl = url + reviewsUrl + '/' + id + items
-            ajaxToSystem(postUrl, {}, function (responce) {
-                callback(responce);
-            });
+        this.getReviewFiles = function (id) {
+            return $http.get(host + reviewsUrl + '/' + id + '/reviewitems')
+                .then(function (responce) {
+                    return responce.data;
+                })
+                .catch(function (responce) {
+                    $log.warn('Crucible failed on getting review files: %s - %s', responce.statusText, responce.status);
+                    return $q.reject(responce.statusText);
+                });
         }
 
         this.addReviewers = function (id, reviewers, callback) {
-            var postUrl = url + reviewsUrl + '/' + id + reviewersURL;
+            var postUrl = host + reviewsUrl + '/' + id + '/reviewers';
             var data = reviewers.join(",");
 
             //TODO Вынести
@@ -77,22 +84,6 @@
                 processData: false,
                 data: data,
                 success: callback
-            });
-        }
-
-        this.whoIs = function (jiraTicket, callback) {
-            var url = 'http://evrusarsd0b13:8080/whois.svc/' + jiraTicket;
-            ajaxToSystem(url, {}, function (resp) {
-                var el = $(resp);
-                var table = $('table#t3', el)
-                var columns = $('tr:gt(1) td:nth-child(n+3)', table);
-                var revs = $.map(columns, function (val) {
-                    return $(val).text().trim();
-                });
-                // $.unique(revs) - оставиит пустаые значения
-                callback($.unique(revs).filter(function (e) {
-                    return e
-                }));
             });
         }
     }

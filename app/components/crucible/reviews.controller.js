@@ -5,17 +5,26 @@
         .module('forcePluginApp')
         .controller('ReviewsController', ReviewsController);
 
-    ReviewsController.$inject = ['$scope'];
+    ReviewsController.$inject = ['$scope', 'crucible', 'whoIsService', 'REVIEW_TYPE'];
 
-    function ReviewsController($scope) {
-        $scope.reviews = [{
-            name: "[VTBRTBR-8246] Review 1"
-        }, {
-            name: "[VTBRTBR-8242] Review 2"
-        }, {
-            name: "[VTBRTBR-8258] Review 3"
-        }, {
-            name: "[VTBRTBR-8317] Review 4"
-        }]
+    function ReviewsController($scope, crucible, whoIs, REVIEW_TYPE) {
+
+        $scope.findReviewers = function (reviewKey) {
+            whoIs.findReviewers(reviewKey)
+                .then(function (reviewers) {
+                    alert(reviewers);
+                });
+        };
+
+        crucible.getReviews(REVIEW_TYPE.TO_REVIEW)
+            .then(function (reviews) {
+                $scope.reviewsToReview = reviews;
+            });
+
+        crucible.getReviews(REVIEW_TYPE.OPEN)
+            .then(function (reviews) {
+                $scope.openReviews = reviews;
+            });
+
     }
 })();

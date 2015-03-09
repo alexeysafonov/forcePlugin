@@ -1,5 +1,40 @@
-<ul class="entity-list">
-    <li ng-repeat="review in reviews" class="entity-list-item">
-        <span>{{review.name}}</span>
-    </li>
-</ul>
+<md-content class="md-padding">
+    <div layout layout-align="center center">
+        <md-progress-circular md-mode="indeterminate" ng-if="loading"></md-progress-circular>
+        <strong ng-if="reviewsToReview.length == 0 && openReviews.length == 0">There are no reviews.</strong>
+    </div>
+
+    <div layout ng-if="openReviews.length">
+        <strong>Opened</strong>
+    </div>
+    <md-list ng-if="openReviews.length">
+        <md-item ng-repeat="review in openReviews">
+            <md-item-content>
+                <div class="md-tile-content">
+                    <a href="https://crucible.epam.com/cru/{{review.permaId.id}}"
+                       target="_blank">{{review.permaId.id}}</a>
+
+                    <h3 ng-click="findReviewers(review.permaId.id)">{{review.name}}</h3>
+                </div>
+            </md-item-content>
+            <md-divider ng-if="!$last"></md-divider>
+        </md-item>
+    </md-list>
+
+    <div layout ng-if="reviewsToReview.length">
+        <strong>To review</strong>
+    </div>
+    <md-list ng-if="reviewsToReview.length">
+        <md-item ng-repeat="review in reviewsToReview">
+            <md-item-content>
+                <div class="md-tile-content">
+                    <a href="https://crucible.epam.com/cru/{{review.permaId.id}}"
+                       target="_blank">{{review.permaId.id}}</a>
+
+                    <h3 ng-click="findReviewers(review.permaId.id)">{{review.name}}</h3>
+                </div>
+            </md-item-content>
+            <md-divider ng-if="!$last"></md-divider>
+        </md-item>
+    </md-list>
+</md-content>

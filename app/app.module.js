@@ -5,7 +5,8 @@
         .module('forcePluginApp', [
             'ngRoute',
             'ngMaterial',
-            'fpSettingsMod'
+            'fpSettingsMod',
+            'whoIs'
         ])
         .run(config);
 

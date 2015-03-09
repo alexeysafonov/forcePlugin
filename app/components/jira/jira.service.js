@@ -54,7 +54,8 @@
                     'summary',
                     'status',
                     'assignee',
-                    'issuetype'
+                    'issuetype',
+                    'project'
                 ]
             });
         }

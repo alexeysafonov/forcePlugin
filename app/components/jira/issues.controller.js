@@ -5,11 +5,16 @@
         .module('forcePluginApp')
         .controller('IssuesController', IssuesController);
 
-    IssuesController.$inject = ['$scope', '$mdToast', 'jira'];
+    IssuesController.$inject = ['$scope', '$mdToast', '$window', 'jira', 'crucible'];
 
-    function IssuesController($scope, $mdToast, jira) {
+    function IssuesController($scope, $mdToast, $window, jira, crucible) {
         $scope.selectedIndex = null;
         $scope.loading = true;
+        $scope.select = function (index) {
+            $scope.selectedIndex = index;
+        };
+        $scope.performAction = performAction;
+        $scope.createReview = createReview;
 
         jira.getIssuesByCurrentFilter().success(function (data) {
             $scope.tickets = data.issues;
@@ -23,11 +28,7 @@
             $scope.loading = false;
         });
 
-        $scope.select = function (index) {
-            $scope.selectedIndex = index;
-        };
-
-        $scope.performAction = function (issueId, action) {
+        function performAction(issueId, action) {
             jira.performAction(issueId, action.id).success(function () {
                 $mdToast.show(
                     $mdToast.simple()
@@ -44,5 +45,16 @@
                 );
             });
         };
+
+        function createReview(issue) {
+            var name = '[' + issue.key + '] ' + issue.fields.summary,
+            //TODO find out how to get it from jira issue
+                projectKey = 'CR-VTBRTLB';
+
+            crucible.createReview(issue.fields.assignee.name, name, projectKey, issue.key)
+                .then(function (review) {
+                    $window.open('https://crucible.epam.com/cru/' + review.permaId.id);
+                });
+        }
     }
 })();

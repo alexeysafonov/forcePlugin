@@ -1,6 +1,7 @@
 <button ng-repeat="action in tickets[selectedIndex].actions"
         ng-click="performAction(tickets[selectedIndex].key, action)">{{action.name}}
 </button>
+<button ng-if="selectedIndex" ng-click="createReview(tickets[selectedIndex])">Create review</button>
 
 <md-content class="md-padding">
     <div layout layout-align="center center">
