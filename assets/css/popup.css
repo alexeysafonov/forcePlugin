@@ -213,3 +213,11 @@ body {
     overflow: hidden;
     outline:none;
 }
+
+.action-bar {
+    padding-top: 10px;
+}
+
+.action-bar a {
+    cursor: pointer;
+}

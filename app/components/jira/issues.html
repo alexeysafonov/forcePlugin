@@ -1,7 +1,22 @@
-<button ng-repeat="action in tickets[selectedIndex].actions"
-        ng-click="performAction(tickets[selectedIndex].key, action)">{{action.name}}
-</button>
-<button ng-if="selectedIndex !== null" ng-click="createReview(tickets[selectedIndex])">Create review</button>
+<div class="btn-group action-bar" role="group" aria-label="...">
+    <button ng-click="createReview(tickets[selectedIndex])"
+            ng-class="{disabled: selectedIndex === null}"
+            type="button" class="btn btn-default">Create review
+    </button>
+
+    <div class="btn-group" role="group">
+        <button ng-class="{disabled: selectedIndex === null}"
+                type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+            Workflow
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu" role="menu">
+            <li ng-repeat="action in tickets[selectedIndex].actions">
+                <a ng-click="performAction(tickets[selectedIndex].key, action)">{{action.name}}</a>
+            </li>
+        </ul>
+    </div>
+</div>
 
 <md-content class="md-padding">
     <div layout layout-align="center center">
