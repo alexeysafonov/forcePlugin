@@ -21,9 +21,9 @@
                 $scope.reviewsToReview = reviews;
             });
 
-        crucible.getReviews(REVIEW_TYPE.OPEN)
+        crucible.getReviews(REVIEW_TYPE.OUT_FOR_REVIEW)
             .then(function (reviews) {
-                $scope.openReviews = reviews;
+                $scope.outForReview = reviews;
             });
 
     }

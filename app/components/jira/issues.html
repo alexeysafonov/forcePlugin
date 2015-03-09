@@ -1,7 +1,7 @@
 <button ng-repeat="action in tickets[selectedIndex].actions"
         ng-click="performAction(tickets[selectedIndex].key, action)">{{action.name}}
 </button>
-<button ng-if="selectedIndex" ng-click="createReview(tickets[selectedIndex])">Create review</button>
+<button ng-if="selectedIndex !== null" ng-click="createReview(tickets[selectedIndex])">Create review</button>
 
 <md-content class="md-padding">
     <div layout layout-align="center center">
@@ -12,7 +12,7 @@
     <md-list>
         <md-item ng-repeat="ticket in tickets">
             <md-item-content ng-click="select($index)" ng-class="{selected: $index == selectedIndex}">
-                <img ng-src="{{ticket.fields.issuetype.iconUrl}}"/>
+                <img ng-src="{{ticket.fields.issuetype.iconUrl}}" title="{{ticket.fields.issuetype.name}}"/>
 
                 <div class="md-tile-content">
                     <a href="https://jira.epam.com/jira/browse/{{ticket.key}}" target="_blank">{{ticket.key}}</a>

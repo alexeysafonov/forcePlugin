@@ -4,11 +4,11 @@
         <strong ng-if="reviewsToReview.length == 0 && openReviews.length == 0">There are no reviews.</strong>
     </div>
 
-    <div layout ng-if="openReviews.length">
-        <strong>Opened</strong>
+    <div layout ng-if="outForReview.length">
+        <strong>Out for review</strong>
     </div>
-    <md-list ng-if="openReviews.length">
-        <md-item ng-repeat="review in openReviews">
+    <md-list ng-if="outForReview.length">
+        <md-item ng-repeat="review in outForReview">
             <md-item-content>
                 <div class="md-tile-content">
                     <a href="https://crucible.epam.com/cru/{{review.permaId.id}}"

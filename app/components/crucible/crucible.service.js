@@ -6,6 +6,10 @@
         .service('crucible', crucibleService)
         .constant('REVIEW_TYPE', {
             TO_REVIEW: 'toReview',
+            OUT_FOR_REVIEW: 'outForReview',
+            DRAFTS: 'drafts',
+            READY_TO_CLOSE: 'toSummarize',
+            COMPLETED: 'completed',
             OPEN: 'open'
         })
 
