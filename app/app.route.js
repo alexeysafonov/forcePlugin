@@ -21,6 +21,10 @@
                 templateUrl: 'app/components/crucible/reviews.html',
                 controller: 'ReviewsController'
             }).
+            when('/crucible/reviewers/:reviewKey', {
+                templateUrl: 'app/components/crucible/reviewers.html',
+                controller: 'ReviewersController'
+            }).
             otherwise({
                 redirectTo: '/jira/filters'
             });

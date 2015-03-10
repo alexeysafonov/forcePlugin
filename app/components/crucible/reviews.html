@@ -14,7 +14,7 @@
                     <a href="https://crucible.epam.com/cru/{{review.permaId.id}}"
                        target="_blank">{{review.permaId.id}}</a>
 
-                    <h4 ng-click="findReviewers(review.permaId.id)">{{review.name}}</h4>
+                    <h4 ng-click="goTo('crucible/reviewers/' + review.permaId.id)">{{review.name}}</h4>
                 </div>
             </md-item-content>
             <md-divider ng-if="!$last"></md-divider>

@@ -73,22 +73,15 @@
                 });
         }
 
-        this.addReviewers = function (id, reviewers, callback) {
-            var postUrl = host + reviewsUrl + '/' + id + '/reviewers';
-            var data = reviewers.join(",");
-
-            //TODO Вынести
-            //Статус 204(не 200!!) сигнализирует об успещности. Тела респонса нет
-            $.ajax({
-                url: postUrl,
-                type: 'POST',
-                contentType: 'application/json',
-                dataType: 'json',
-                // Самое главное этот флаг, он предотвращает обработку данных и отправляет "сырую строку"
-                processData: false,
-                data: data,
-                success: callback
-            });
+        this.addReviewers = function (id, reviewers) {
+            return $http.post(host + reviewsUrl + '/' + id + '/reviewers', reviewers.join(','))
+                .then(function (responce) {
+                    return responce.data;
+                })
+                .catch(function (responce) {
+                    $log.warn('Crucible failed on adding reviewers: %s - %s', responce.statusText, responce.status);
+                    return responce.statusText;
+                });
         }
     }
 })();

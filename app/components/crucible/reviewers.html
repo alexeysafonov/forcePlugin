@@ -1,0 +1,32 @@
+<div class="btn-group action-bar" role="group" aria-label="...">
+    <button ng-click="selectAll()"
+            ng-class="{disabled: false}"
+            type="button" class="btn btn-default">Select all
+    </button>
+    <button ng-click="addReviewers()"
+            ng-class="{disabled: false}"
+            type="button" class="btn btn-default">Add
+    </button>
+</div>
+
+<md-content class="content scrollbox">
+    <div layout layout-align="center center">
+        <md-progress-circular md-mode="indeterminate" ng-if="loading"></md-progress-circular>
+        <strong ng-if="reviewers.length == 0">Nobody to add</strong>
+    </div>
+
+    <md-list ng-if="reviewers.length">
+        <md-item ng-repeat="reviewer in reviewers">
+            <md-item-content class="content-item">
+                <div class="md-tile-content">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" ng-model="reviewer.checked"> {{reviewer.name}}
+                        </label>
+                    </div>
+                </div>
+            </md-item-content>
+            <md-divider ng-if="!$last"></md-divider>
+        </md-item>
+    </md-list>
+</md-content>
