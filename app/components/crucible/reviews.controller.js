@@ -13,7 +13,7 @@
         $scope.findReviewers = function (reviewKey) {
             whoIs.findReviewers(reviewKey)
                 .then(function (reviewers) {
-                    alert(reviewers);
+                    alert(reviewers.join(', '));
                 });
         };
 
