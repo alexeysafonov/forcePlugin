@@ -10,13 +10,6 @@
     function ReviewsController($scope, $q, crucible, whoIs, REVIEW_TYPE) {
         $scope.loading = true;
 
-        $scope.findReviewers = function (reviewKey) {
-            whoIs.findReviewers(reviewKey)
-                .then(function (reviewers) {
-                    alert(reviewers.join(', '));
-                });
-        };
-
         var toReviewPromise = crucible.getReviews(REVIEW_TYPE.TO_REVIEW)
             .then(function (reviews) {
                 $scope.reviewsToReview = reviews;
