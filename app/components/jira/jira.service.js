@@ -49,7 +49,6 @@
             return $http.post(host + '/rest/api/2/search', {
                 "jql": currentFilterJQL,
                 "startAt": 0,
-                "maxResults": 15,
                 "fields": [
                     'summary',
                     'status',
