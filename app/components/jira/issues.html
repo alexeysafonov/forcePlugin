@@ -1,22 +1,30 @@
-<div class="btn-group action-bar" role="group" aria-label="...">
-    <button ng-click="createReview(tickets[selectedIndex])"
-            ng-class="{disabled: selectedIndex === null}"
-            type="button" class="btn btn-default btn-create-review">Create review
-    </button>
-
-    <div class="btn-group" role="group">
-        <button ng-class="{disabled: !tickets[selectedIndex].actions.length}"
-                type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-            Workflow
-            <span class="caret"></span>
+<div class="btn-group">
+    <div class="btn-group action-bar" role="group">
+        <button ng-click="createReview(tickets[selectedIndex])"
+                ng-class="{disabled: selectedIndex === null}"
+                type="button" class="btn btn-default btn-create-review">Create review
         </button>
-        <ul class="dropdown-menu" role="menu">
-            <li ng-repeat="action in tickets[selectedIndex].actions">
-                <a ng-click="performAction(tickets[selectedIndex].key, action)">
-                    <img class="action-image" ng-src="{{action.to.iconUrl}}"/>{{action.name}}
-                </a>
-            </li>
-        </ul>
+
+        <div class="btn-group" role="group">
+            <button ng-class="{disabled: !tickets[selectedIndex].actions.length}"
+                    type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                Workflow
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li ng-repeat="action in tickets[selectedIndex].actions">
+                    <a ng-click="performAction(tickets[selectedIndex].key, action)">
+                        <img class="action-image" ng-src="{{action.to.iconUrl}}"/>{{action.name}}
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="input-group action-bar">
+        <div class="input-group-addon">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+        </div>
+        <input type="text" placeholder="Search" class="form-control" ng-model="search"/>
     </div>
 </div>
 
@@ -27,7 +35,7 @@
     </div>
 
     <md-list>
-        <md-item ng-repeat="ticket in tickets">
+        <md-item ng-repeat="ticket in tickets | filter : search">
             <md-item-content ng-click="select($index)" ng-class="{selected: $index == selectedIndex}" class="content-item">
                 <img ng-src="{{ticket.fields.issuetype.iconUrl}}" title="{{ticket.fields.issuetype.name}}"/>
 
