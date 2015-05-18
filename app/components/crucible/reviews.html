@@ -1,40 +1,27 @@
-<md-content class="content scrollbox">
+<md-content class="content">
+    <md-progress-linear md-mode="indeterminate" ng-if="loading"></md-progress-linear>
     <div layout layout-align="center center">
-        <md-progress-circular md-mode="indeterminate" ng-if="loading"></md-progress-circular>
         <strong ng-if="reviewsToReview.length == 0 && openReviews.length == 0">There are no reviews.</strong>
     </div>
 
-    <div layout ng-if="outForReview.length">
-        <strong>Out for review</strong>
+    <div layout="column" flex layout-fill>
+        <md-content style="height: 450px;">
+            <section ng-repeat="(reviewType, reviews) in reviewsMap" ng-if="reviews.length">
+                <md-subheader class="md-primary">{{reviewsNames[reviewType]}}</md-subheader>
+                <md-list layout="column">
+                    <md-item ng-repeat="review in reviews">
+                        <md-item-content class="content-item">
+                            <div class="md-tile-content">
+                                <a href="https://crucible.epam.com/cru/{{review.permaId.id}}"
+                                   target="_blank">{{review.permaId.id}}</a>
+
+                                <h4 ng-click="goTo('crucible/reviewers/' + review.permaId.id)">{{review.name}}</h4>
+                            </div>
+                        </md-item-content>
+                        <md-divider ng-if="!$last"></md-divider>
+                    </md-item>
+                </md-list>
+            </section>
+        </md-content>
     </div>
-    <md-list ng-if="outForReview.length">
-        <md-item ng-repeat="review in outForReview">
-            <md-item-content class="content-item">
-                <div class="md-tile-content">
-                    <a href="https://crucible.epam.com/cru/{{review.permaId.id}}"
-                       target="_blank">{{review.permaId.id}}</a>
-
-                    <h4 ng-click="goTo('crucible/reviewers/' + review.permaId.id)">{{review.name}}</h4>
-                </div>
-            </md-item-content>
-            <md-divider ng-if="!$last"></md-divider>
-        </md-item>
-    </md-list>
-
-    <div layout ng-if="reviewsToReview.length">
-        <strong>To review</strong>
-    </div>
-    <md-list ng-if="reviewsToReview.length">
-        <md-item ng-repeat="review in reviewsToReview">
-            <md-item-content class="content-item">
-                <div class="md-tile-content">
-                    <a href="https://crucible.epam.com/cru/{{review.permaId.id}}"
-                       target="_blank">{{review.permaId.id}}</a>
-
-                    <h4 ng-click="goTo('crucible/reviewers/' + review.permaId.id)">{{review.name}}</h4>
-                </div>
-            </md-item-content>
-            <md-divider ng-if="!$last"></md-divider>
-        </md-item>
-    </md-list>
 </md-content>
