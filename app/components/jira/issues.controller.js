@@ -1,5 +1,5 @@
 (function () {
-    "use strict";
+    'use strict';
 
     angular
         .module('forcePluginApp')
@@ -44,16 +44,16 @@
                         .hideDelay(1000)
                 );
             });
-        };
+        }
 
         function createReview(issue) {
-            var name = '[' + issue.key + '] ' + issue.fields.summary,
+            var name = `[${issue.key}] ${issue.fields.summary}`,
             //TODO find out how to get it from jira issue
                 projectKey = 'CR-VTBRTLB';
 
             crucible.createReview(issue.fields.assignee.name, name, projectKey, issue.key)
                 .then(function (review) {
-                    $window.open('https://crucible.epam.com/cru/' + review.permaId.id);
+                    $window.open(`https://crucible.epam.com/cru/${review.permaId.id}`);
                 });
         }
     }

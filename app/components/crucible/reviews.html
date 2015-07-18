@@ -1,3 +1,31 @@
+<div class="btn-group">
+    <div class="btn-group action-bar" role="group">
+        <button ng-click="goTo('crucible/reviewers/' + selectedReview.permaId.id)"
+                ng-class="{disabled: selectedReview === null}"
+                type="button" class="btn btn-default">Find reviewers
+        </button>
+
+        <div class="btn-group" role="group">
+            <button ng-class="{disabled: !hasTransitions(selectedReview)}"
+                    type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                Transitions
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu" ng-if="hasTransitions(selectedReview)">
+                <li ng-repeat="action in selectedReview.transitions.transitionData">
+                    <a ng-click="performAction(selectedReview, action.name)">{{action.displayName}}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="input-group action-bar">
+        <div class="input-group-addon">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+        </div>
+        <input type="text" placeholder="Search" class="form-control" ng-model="search"/>
+    </div>
+</div>
+
 <md-content class="content">
     <md-progress-linear md-mode="indeterminate" ng-if="loading"></md-progress-linear>
     <div layout layout-align="center center">
@@ -9,13 +37,13 @@
             <section ng-repeat="(reviewType, reviews) in reviewsMap" ng-if="reviews.length">
                 <md-subheader class="md-primary">{{reviewsNames[reviewType]}}</md-subheader>
                 <md-list layout="column">
-                    <md-item ng-repeat="review in reviews">
-                        <md-item-content class="content-item">
+                    <md-item ng-repeat="review in reviews | filter : search">
+                        <md-item-content ng-click="select(review)" ng-class="{selected: review === selectedReview}" class="content-item">
+                            <img ng-src="{{review.author.avatarUrl}}" title="{{review.author.displayName}}" class="review-list-item__reviewer-avatar"/>
                             <div class="md-tile-content">
                                 <a href="https://crucible.epam.com/cru/{{review.permaId.id}}"
                                    target="_blank">{{review.permaId.id}}</a>
-
-                                <h4 ng-click="goTo('crucible/reviewers/' + review.permaId.id)">{{review.name}}</h4>
+                                <h4>{{review.name}}</h4>
                             </div>
                         </md-item-content>
                         <md-divider ng-if="!$last"></md-divider>
