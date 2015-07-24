@@ -10,11 +10,11 @@
     function routeConfig($routeProvider) {
         $routeProvider.
             when('/jira/filters', {
-                templateUrl: 'app/components/jira/filters.html',
+                templateUrl: 'app/components/jira/filters/filters.html',
                 controller: 'FiltersController'
             }).
             when('/jira/issues', {
-                templateUrl: 'app/components/jira/issues.html',
+                templateUrl: 'app/components/jira/issues/issues.html',
                 controller: 'IssuesController'
             }).
             when('/crucible/reviews', {

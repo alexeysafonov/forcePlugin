@@ -6,7 +6,8 @@
             'ngRoute',
             'ngMaterial',
             'fpSettingsMod',
-            'whoIs'
+            'whoIs',
+            'fp-filters'
         ])
         .run(config);
 

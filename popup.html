@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="assets/css/angular-material.min-0.6.1.css">
     <link rel="stylesheet" href="assets/css/bootstrap.css">
     <link rel="stylesheet" href="assets/css/popup.css"/>
+    <link rel="stylesheet" href="app/components/jira/filters/filters.css"/>
 </head>
 <body>
 <div class="wrap">
@@ -30,6 +31,7 @@
 
 <script src="app/components/whois/whois.service.js"></script>
 <script src="app/settings.js"></script>
+<script src="app/components/jira/filters/filters.module.js"></script>
 <script src="app/app.module.js"></script>
 <script src="app/app.route.js"></script>
 
@@ -40,9 +42,12 @@
 <script src="app/components/settings/settings.service.js"></script>
 
 <!-- Controllers-->
-<script src="app/components/jira/filters.controller.js"></script>
-<script src="app/components/jira/issues.controller.js"></script>
+<script src="app/components/jira/filters/filters.controller.js"></script>
+<script src="app/components/jira/issues/issues.controller.js"></script>
 <script src="app/components/crucible/reviews.controller.js"></script>
 <script src="app/components/crucible/reviewers.controller.js"></script>
+
+<!-- Directives -->
+<script src="app/components/jira/filters/filter.directive.js"></script>
 </body>
 </html>

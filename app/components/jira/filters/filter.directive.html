@@ -1,0 +1,25 @@
+<div ng-switch="editing" class="filter-list-item">
+    <span ng-switch-when="true">
+        <input type="text" ng-model="filter.name" ng-disabled="saving"/>
+
+        <div class="filter-list-item__btn-block">
+            <button class="filter-list-item__button" title="Save" ng-click="save(filter)" ng-disabled="saving">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+            </button>
+            <button class="filter-list-item__button" title="Cancel" ng-click="cancelEdit(filter)" ng-disabled="saving">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            </button>
+        </div>
+    </span>
+
+    <span ng-switch-default="">
+        <a href="#/jira/issues" class="filter-list-item__link">{{filter.name}}</a>
+
+        <div class="filter-list-item__btn-block">
+            <button ng-click="edit(filter)" class="filter-list-item__button filter-list-item__edit-button"
+                    title="Edit">
+                <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+            </button>
+        </div>
+    </span>
+</div>

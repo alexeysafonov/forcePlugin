@@ -2,51 +2,70 @@
     'use strict';
 
     angular
-        .module('forcePluginApp')
+        .module('fp-jira', [])
         .service('jira', jiraService);
 
-    jiraService.$inject = ['$http'];
+    jiraService.$inject = ['$http', '$q', '$log'];
 
-    function jiraService($http) {
+    function jiraService($http, $q, $log) {
         var currentFilterJQL,
         //TODO move to settings
             host = 'https://jira.epam.com/jira';
 
-        this.setCurrentFilterJQL = function (jql) {
+        return {
+            setCurrentFilterJQL: setCurrentFilterJQL,
+            getCurrentFilterJQL: getCurrentFilterJQL,
+            login: login,
+            checkAuth: checkAuth,
+            getFavoriteFilters: getFavoriteFilters,
+            getPossibleActions: getPossibleActions,
+            performAction: performAction,
+            getIssuesByCurrentFilter: getIssuesByCurrentFilter,
+            updateFilter: updateFilter
+        };
+
+        function setCurrentFilterJQL(jql) {
             currentFilterJQL = jql;
-        };
+        }
 
-        this.getCurrentFilterJQL = function () {
+        function getCurrentFilterJQL() {
             return currentFilterJQL;
-        };
+        }
 
-        this.login = function (login, password) {
-            return $http.post(host + '/rest/auth/1/session', {
+        function login(login, password) {
+            return $http.post(`${host}/rest/auth/1/session`, {
                 username: login,
                 password: password
             });
-        };
+        }
 
-        this.checkAuth = function () {
-            return $http.get(host + '/rest/auth/1/session');
-        };
+        function checkAuth() {
+            return $http.get(`${host}/rest/auth/1/session`);
+        }
 
-        this.getFavoriteFilters = function () {
-            return $http.get(host + '/rest/api/2/filter/favourite?expand=false');
-        };
+        function getFavoriteFilters() {
+            return $http.get(`${host}/rest/api/2/filter/favourite?expand=false`)
+                .then(function (response) {
+                    return response.data;
+                })
+                .catch(function (response) {
+                    $log.warn(`Jira failed in ${getFavoriteFilters.name}: ${response.statusText} - ${response.status}`);
+                    return $q.reject(response.text);
+                });
+        }
 
-        this.getPossibleActions = function (issueId) {
-            return $http.get(host + '/rest/api/2/issue/{issueId}/transitions'.replace('{issueId}', issueId));
-        };
+        function getPossibleActions(issueId) {
+            return $http.get(`${host}/rest/api/2/issue/${issueId}/transitions`);
+        }
 
-        this.performAction = function (issueId, actionId) {
-            return $http.post(host + '/rest/api/2/issue/{issueId}/transitions'.replace('{issueId}', issueId), {
+        function performAction(issueId, actionId) {
+            return $http.post(`${host}/rest/api/2/issue/${issueId}/transitions`, {
                 'transition': actionId
             });
-        };
+        }
 
-        this.getIssuesByCurrentFilter = function () {
-            return $http.post(host + '/rest/api/2/search', {
+        function getIssuesByCurrentFilter() {
+            return $http.post(`${host}/rest/api/2/search`, {
                 "jql": currentFilterJQL,
                 "startAt": 0,
                 "fields": [
@@ -56,7 +75,25 @@
                     'issuetype',
                     'project'
                 ]
-            });
+            })
+                .then(function (response) {
+                    return response.data;
+                })
+                .catch(function (response) {
+                    $log.warn(`Jira failed on getting issues by filter: ${response.statusText} - ${response.status}`);
+                    return $q.reject(response.text);
+                });
+        }
+
+        function updateFilter(filter) {
+            return $http.put(`${host}/rest/api/2/filter/${filter.id}?expand=false`, filter)
+                .then(function (updatedFilter) {
+                    return updatedFilter;
+                })
+                .catch(function (response) {
+                    $log.warn(`Jira failed on filter update: ${response.statusText} - ${response.status}`);
+                    return $q.reject(response.text);
+                });
         }
     }
 })();

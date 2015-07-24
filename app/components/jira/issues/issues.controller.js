@@ -16,17 +16,19 @@
         $scope.performAction = performAction;
         $scope.createReview = createReview;
 
-        jira.getIssuesByCurrentFilter().success(function (data) {
-            $scope.tickets = data.issues;
+        jira.getIssuesByCurrentFilter()
+            .then(function (data) {
+                $scope.tickets = data.issues;
 
-            $scope.tickets.forEach(function (issue) {
-                jira.getPossibleActions(issue.key).success(function (data) {
-                    issue.actions = data.transitions;
+                $scope.tickets.forEach(function (issue) {
+                    jira.getPossibleActions(issue.key).success(function (data) {
+                        issue.actions = data.transitions;
+                    });
                 });
+            })
+            .finally(function () {
+                $scope.loading = false;
             });
-        }).finally(function () {
-            $scope.loading = false;
-        });
 
         function performAction(issueId, action) {
             jira.performAction(issueId, action.id).success(function () {

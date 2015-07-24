@@ -1,9 +1,0 @@
-<div layout layout-align="center center">
-    <md-progress-circular md-mode="indeterminate" ng-if="loading"></md-progress-circular>
-</div>
-
-<ul class="entity-list">
-    <li ng-repeat="filter in filters" class="entity-list-item" ng-click="setCurrentFilter(filter.jql)">
-        <a href="#/jira/issues">{{filter.name}}</a>
-    </li>
-</ul>
