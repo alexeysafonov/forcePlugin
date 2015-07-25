@@ -2,7 +2,7 @@
     <md-progress-circular md-mode="indeterminate"></md-progress-circular>
 </div>
 
-<div ng-if="error">{{error}}</div>
+<div class="alert alert-warning error-block" role="alert" ng-if="error">{{error}}</div>
 
 <ul class="filter-list" ng-if="filters && filters.length">
     <li ng-repeat="filter in filters">

@@ -3,6 +3,7 @@
 
     angular
         .module('fp-filters', [
-            'fp-jira'
+            'fp-jira',
+            'fpSettingsMod'
         ]);
 })();

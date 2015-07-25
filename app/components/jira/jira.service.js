@@ -32,15 +32,30 @@
             return currentFilterJQL;
         }
 
-        function login(login, password) {
+        function login(username, password) {
             return $http.post(`${host}/rest/auth/1/session`, {
-                username: login,
+                username: username,
                 password: password
-            });
+            })
+                .then(function (response) {
+                    return response.data;
+                })
+                .catch(function (response) {
+                    _logError(login, response);
+                    return $q.reject(response.data.errorMessages[0]);
+                });
         }
 
         function checkAuth() {
-            return $http.get(`${host}/rest/auth/1/session`);
+            return $http.get(`${host}/rest/auth/1/session`)
+                .then(function (response) {
+                    return response.data;
+                })
+                .catch(function (response) {
+                    _logError(checkAuth, response);
+                    return $q.reject(response.data.errorMessages[0]);
+                });
+
         }
 
         function getFavoriteFilters() {
@@ -49,7 +64,7 @@
                     return response.data;
                 })
                 .catch(function (response) {
-                    $log.warn(`Jira failed in ${getFavoriteFilters.name}: ${response.statusText} - ${response.status}`);
+                    _logError(getFavoriteFilters, response);
                     return $q.reject(response.text);
                 });
         }
@@ -80,7 +95,7 @@
                     return response.data;
                 })
                 .catch(function (response) {
-                    $log.warn(`Jira failed on getting issues by filter: ${response.statusText} - ${response.status}`);
+                    _logError(getIssuesByCurrentFilter, response);
                     return $q.reject(response.text);
                 });
         }
@@ -91,9 +106,13 @@
                     return updatedFilter;
                 })
                 .catch(function (response) {
-                    $log.warn(`Jira failed on filter update: ${response.statusText} - ${response.status}`);
+                    _logError(updateFilter, response);
                     return $q.reject(response.text);
                 });
+        }
+
+        function _logError(method, response) {
+            $log.warn(`Jira failed in ${method.name}(): ${response.statusText} - ${response.status}`);
         }
     }
 })();

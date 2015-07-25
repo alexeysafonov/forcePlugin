@@ -5,19 +5,24 @@
         .module('fp-filters')
         .controller('FiltersController', FiltersController);
 
-    FiltersController.$inject = ['$scope', 'jira'];
+    FiltersController.$inject = ['$scope', 'jira', 'settingsStorage'];
 
-    function FiltersController($scope, jira) {
+    function FiltersController($scope, jira, settingsStorage) {
         $scope.loading = true;
 
         $scope.setCurrentFilter = setCurrentFilter;
 
-        jira.getFavoriteFilters()
+        jira.checkAuth()
+            .catch(function () {
+                return settingsStorage.loadSettings(['username', 'password'])
+                    .then(function (settings) {
+                        return jira.login(settings.username, settings.password)
+                    });
+            })
+            .then(function () {
+                return jira.getFavoriteFilters();
+            })
             .then(function (filters) {
-                filters.push({
-                    name: 'Assigned to me',
-                    jql: 'assignee = currentUser() AND resolution = Unresolved'
-                });
                 $scope.filters = filters;
             })
             .catch(function (errorMsg) {
