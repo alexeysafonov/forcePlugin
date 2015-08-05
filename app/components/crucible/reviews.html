@@ -2,7 +2,15 @@
     <div class="btn-group action-bar" role="group">
         <button ng-click="goTo('crucible/reviewers/' + selectedReview.permaId.id)"
                 ng-class="{disabled: selectedReview === null}"
-                type="button" class="btn btn-default">Find reviewers
+                title="Find reviewers"
+                type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+        </button>
+        <button ng-click="remind(selectedReview)"
+                ng-class="{disabled: selectedReview === null}"
+                title="Remind"
+                type="button" class="btn btn-default">
+            <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
         </button>
 
         <div class="btn-group" role="group">

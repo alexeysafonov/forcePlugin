@@ -39,17 +39,18 @@
             changeState: changeState,
             getReviewFiles: getReviewFiles,
             addReviewers: addReviewers,
-            availableActions: availableActions
+            availableActions: availableActions,
+            remind: remind
         };
 
-        function login(login, password) {
+        function login(username, password) {
             return $http.post(`${host}/auth-v1/login`, {
-                userName: login,
+                userName: username,
                 password: password
             }).then(function (response) {
                 return response.data;
             }).catch(function (response) {
-                $log.warn(`Crucible authentication failed: ${response.statusText} - ${response.status}`);
+                _logError(login, response);
                 return $q.reject(response.text);
             });
         }
@@ -60,7 +61,7 @@
                     return response.data && response.data.detailedReviewData;
                 })
                 .catch(function (response) {
-                    $log.warn(`Crucible failed on loading reviews: ${response.statusText} - ${response.status}`);
+                    _logError(getReviews, response);
                     return $q.reject(response.statusText);
                 });
         }
@@ -80,7 +81,7 @@
             }).then(function (response) {
                 return response.data && response.data;
             }).catch(function (response) {
-                $log.warn(`Crucible failed on creating review: ${response.statusText} - ${response.status}`);
+                _logError(createReview, response);
                 return $q.reject(response.statusText);
             });
         }
@@ -91,7 +92,7 @@
                     return response.data;
                 })
                 .catch(function (response) {
-                    $log.warn(`Crucible failed on review state change: ${response.statusText} - ${response.status}`);
+                    _logError(changeState, response);
                     return $q.reject(response.statusText);
                 });
         }
@@ -103,7 +104,7 @@
                     return response.data && response.data.transitionData;
                 })
                 .catch(function (response) {
-                    $log.warn(`Crucible failed on getting available actions: ${response.statusText} - ${response.status}`);
+                    _logError(availableActions, response);
                     return $q.reject(response.statusText);
                 });
         }
@@ -114,7 +115,7 @@
                     return response.data;
                 })
                 .catch(function (response) {
-                    $log.warn(`Crucible failed on getting review files: ${response.statusText} - ${response.status}`);
+                    _logError(getReviewFiles, response);
                     return $q.reject(response.statusText);
                 });
         }
@@ -125,9 +126,24 @@
                     return response.data;
                 })
                 .catch(function (response) {
-                    $log.warn(`Crucible failed on adding reviewers: ${response.statusText} - ${response.status}`);
-                    return response.statusText;
+                    _logError(addReviewers, response);
+                    return $q.reject(response.statusText);
                 });
+        }
+
+        function remind(id) {
+            return $http.post(`${host}${reviewsUrl}/${id}/remind`)
+                .then(function (response) {
+                    return response.data;
+                })
+                .catch(function (response) {
+                    _logError(remind, response);
+                    $q.reject(response.statusText);
+                });
+        }
+
+        function _logError(method, response) {
+            $log.warn(`Crucible failed in ${method.name}(): ${response.statusText} - ${response.status}`);
         }
     }
 })();

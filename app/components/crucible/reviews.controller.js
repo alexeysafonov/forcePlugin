@@ -23,6 +23,7 @@
         $scope.select = select;
         $scope.hasTransitions = hasTransitions;
         $scope.performAction = performAction;
+        $scope.remind = remind;
 
         var reviewTypesToLoad = [REVIEW_TYPE.READY_TO_CLOSE,
             REVIEW_TYPE.OUT_FOR_REVIEW,
@@ -72,6 +73,25 @@
                 });
         }
 
+        function remind(review) {
+            crucible.remind(review.permaId.id)
+                .then(function () {
+                    $mdToast.show(
+                        $mdToast.simple()
+                            .content('Reviewers have been notified')
+                            .position('left bottom')
+                            .hideDelay(1000)
+                    );
+                })
+                .catch(function () {
+                    $mdToast.show(
+                        $mdToast.simple()
+                            .content('unable to perform action')
+                            .position('left bottom')
+                            .hideDelay(1000)
+                    );
+                });
+        }
 
         function processReview(review) {
             review.actions.actionData.forEach(function (action) {
