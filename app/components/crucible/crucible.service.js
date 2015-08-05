@@ -132,13 +132,13 @@
         }
 
         function remind(id) {
-            return $http.post(`${host}${reviewsUrl}/${id}/remind`)
+            return $http.post(`${host}${reviewsUrl}/${id}/remind`, {})
                 .then(function (response) {
                     return response.data;
                 })
                 .catch(function (response) {
                     _logError(remind, response);
-                    $q.reject(response.statusText);
+                    return $q.reject(response.statusText);
                 });
         }
 
