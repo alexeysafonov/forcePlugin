@@ -104,7 +104,33 @@ body {
     background: linear-gradient(to bottom, rgba(255, 255, 255, 0), #FFF 70%, #FFF);
 }
 
-.review-list-item__reviewer-avatar {
+.review-list-item__author-avatar {
     height: 21px;
     width: 21px;
+}
+
+/***********/
+
+.review-info {
+    position: relative;
+}
+
+.review__reviewer-list {
+    list-style: none;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+.reviewer-list__item {
+    float: left;
+}
+
+.reviewer__avatar {
+    width: 20px;
+    height: 20px;
+}
+
+.reviewer--completed {
+    opacity: 0.3;
 }

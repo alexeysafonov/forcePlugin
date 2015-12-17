@@ -24,6 +24,7 @@
         $scope.hasTransitions = hasTransitions;
         $scope.performAction = performAction;
         $scope.remind = remind;
+        $scope.unreadCommentsCount = unreadCommentsCount;
 
         var reviewTypesToLoad = [REVIEW_TYPE.READY_TO_CLOSE,
             REVIEW_TYPE.OUT_FOR_REVIEW,
@@ -51,6 +52,12 @@
 
         function hasTransitions(review) {
             return review && review.transitions && review.transitions.transitionData;
+        }
+
+        function unreadCommentsCount(review) {
+            return review.versionedComments && review.versionedComments.comments
+                && review.versionedComments.comments
+                    .reduce((sum, comment) => sum + (comment.readStatus === 'READ' ? 0 : 1), 0);
         }
 
         function performAction(review, actionName) {

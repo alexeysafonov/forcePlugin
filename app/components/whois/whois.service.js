@@ -8,7 +8,7 @@
     whoIsService.$inject = ['$http', '$q'];
 
     function whoIsService($http, $q) {
-        var host = 'http://evrusarsd0b13:8080/whois.svc/';
+        var host = 'http://evrusarsd0b13.saratov.epam.com:8080/whois.svc/';
 
         this.findReviewers = function (crucibleReviewKey) {
             return $http.get(host + crucibleReviewKey)

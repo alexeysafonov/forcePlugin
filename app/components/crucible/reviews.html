@@ -47,11 +47,18 @@
                 <md-list layout="column">
                     <md-item ng-repeat="review in reviews | filter : search">
                         <md-item-content ng-click="select(review)" ng-class="{selected: review === selectedReview}" class="content-item">
-                            <img ng-src="{{review.author.avatarUrl}}" title="{{review.author.displayName}}" class="review-list-item__reviewer-avatar"/>
-                            <div class="md-tile-content">
+                            <img ng-src="{{review.author.avatarUrl}}" title="{{review.author.displayName}}" class="review-list-item__author-avatar"/>
+                            <div class="md-tile-content review-info">
                                 <a href="https://crucible.epam.com/cru/{{review.permaId.id}}"
-                                   target="_blank">{{review.permaId.id}}</a>
+                                   target="_blank">{{review.permaId.id}} <span class="badge">{{unreadCommentsCount(review)}}</span></a>
                                 <h4>{{review.name}}</h4>
+                                <ul class="review__reviewer-list">
+                                    <li ng-repeat="reviewer in review.reviewers.reviewer" class="reviewer-list__item">
+                                        <a href="" ng-class="{'reviewer-list__reviewer': true, 'reviewer--completed': reviewer.completed}">
+                                            <img class="reviewer__avatar" ng-src="{{reviewer.avatarUrl}}" alt="{{reviewer.displayName}}" title="{{reviewer.displayName}}"/>
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
                         </md-item-content>
                         <md-divider ng-if="!$last"></md-divider>
